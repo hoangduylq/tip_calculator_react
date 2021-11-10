@@ -13,8 +13,8 @@ function CalResult() {
   const btnResetEl = useRef(null);
   const btnResultEl = useRef(null);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [, setIsValidBill] = useState(false);
-  const [, setIsValidPeople] = useState(false);
+  const [, setIsValidBill] = state.isValidBill;
+  const [, setIsValidPeople] = state.isValidPeople;
 
   useEffect(() => {
     if (bill || tip || people) {
@@ -25,6 +25,14 @@ function CalResult() {
   }, [bill, tip, people]);
 
   const handleResultBtn = async () => {
+    if (bill <= 0 || !bill) {
+      setIsValidBill(true);
+    }
+
+    if (people <= 0 || !people) {
+      setIsValidPeople(true);
+    }
+
     if (bill > 0 && people > 0) {
       try {
         setIsDisabled(true);
@@ -39,14 +47,6 @@ function CalResult() {
       } catch (error) {
         alert(error.message);
       }
-    }
-
-    if (bill <= 0 || !bill) {
-      setIsValidBill(true);
-    }
-
-    if (people <= 0 || !people) {
-      setIsValidPeople(true);
     }
   };
 
