@@ -18,8 +18,6 @@ function CalInput() {
   const [isValidPeople, setIsValidPeople] = state.isValidPeople;
   const [isShowBtn, setIsShowBtn] = state.isShowBtn;
 
-  console.log(bill);
-
   const handleBtnTip = (tip) => {
     setTip(parseFloat(tip));
   };
@@ -36,7 +34,6 @@ function CalInput() {
       /[a-zA-Z&/ \\#,+()$~%'":*?<>{}]/g,
       ''
     );
-    console.log(e.target.value);
     selector(e.target.value);
     validSelector(false);
   };
