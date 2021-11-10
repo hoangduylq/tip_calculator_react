@@ -18,6 +18,8 @@ function CalInput() {
   const [isValidPeople, setIsValidPeople] = state.isValidPeople;
   const [isShowBtn, setIsShowBtn] = state.isShowBtn;
 
+  console.log(bill);
+
   const handleBtnTip = (tip) => {
     setTip(parseFloat(tip));
   };
@@ -30,7 +32,12 @@ function CalInput() {
     if (e.target.value.length > 9) {
       e.target.value = e.target.value.slice(0, 9);
     }
-    selector(parseFloat(e.target.value));
+    e.target.value = e.target.value.replace(
+      /[a-zA-Z&/ \\#,+()$~%'":*?<>{}]/g,
+      ''
+    );
+    console.log(e.target.value);
+    selector(e.target.value);
     validSelector(false);
   };
 
@@ -38,7 +45,11 @@ function CalInput() {
     if (e.target.value.length > 4) {
       e.target.value = e.target.value.slice(0, 4);
     }
-    setInputTip(parseFloat(e.target.value));
+    e.target.value = e.target.value.replace(
+      /[a-zA-Z&/ \\#,+()$~%'":*?<>{}]/g,
+      ''
+    );
+    setInputTip(e.target.value);
   };
 
   const handleOnBlurInputBill = () => {
@@ -52,7 +63,7 @@ function CalInput() {
   };
 
   const handleOnBlurInputPeople = () => {
-    if (people <= 0 || !people || !Number.isInteger(people)) {
+    if (people <= 0 || !people || people.includes('.')) {
       setIsValidPeople(true);
     }
   };
@@ -67,7 +78,7 @@ function CalInput() {
         <div className='calculator__input__bill-wrap'>
           <img src={Dollar} alt='' />
           <input
-            type='number'
+            type='text'
             id='bill'
             placeholder='0'
             autoComplete='off'
@@ -98,7 +109,7 @@ function CalInput() {
             Custom
           </button>
           <input
-            type='number'
+            type='text'
             id='tip-custom-input'
             className={!isShowBtn ? 'show' : 'hide'}
             placeholder='0'
@@ -119,7 +130,7 @@ function CalInput() {
         <div className='calculator__input__people-wrap'>
           <img src={Person} alt='' />
           <input
-            type='number'
+            type='text'
             id='people'
             placeholder='0'
             autoComplete='off'

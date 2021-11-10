@@ -23,7 +23,7 @@ function CalResult() {
   const [, setIsShowBtn] = state.isShowBtn;
 
   useEffect(() => {
-    if (bill || tip || people) {
+    if (bill || tip || people || isNaN(bill) || isNaN(people) || isNaN(tip)) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
@@ -35,11 +35,11 @@ function CalResult() {
       setIsValidBill(true);
     }
 
-    if (people <= 0 || !people || !Number.isInteger(people)) {
+    if (people <= 0 || !people || people.includes('.')) {
       setIsValidPeople(true);
     }
 
-    if (bill > 0 && people > 0 && Number.isInteger(people) && tip >= 0) {
+    if (bill > 0 && people > 0 && !people.includes('.') && tip >= 0) {
       try {
         setIsDisabled(true);
         const res = await axios.get(
