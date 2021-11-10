@@ -52,6 +52,7 @@ function CalResult() {
         }
       } catch (error) {
         alert(error.message);
+        setIsDisabled(false);
       }
     }
   };
