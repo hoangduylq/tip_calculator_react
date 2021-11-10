@@ -5,16 +5,22 @@ import { API_URL } from '../../constants/Config';
 
 function CalResult() {
   const state = useContext(GlobalState);
+
   const [bill, setBill] = state.bill;
   const [tip, setTip] = state.tip;
   const [people, setPeople] = state.people;
+
   const [amount, setAmount] = useState(0);
   const [total, setTotal] = useState(0);
+
   const btnResetEl = useRef(null);
   const btnResultEl = useRef(null);
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [, setIsValidBill] = state.isValidBill;
   const [, setIsValidPeople] = state.isValidPeople;
+  const [, setInputTip] = state.inputTip;
+  const [, setIsShowBtn] = state.isShowBtn;
 
   useEffect(() => {
     if (bill || tip || people) {
@@ -29,11 +35,11 @@ function CalResult() {
       setIsValidBill(true);
     }
 
-    if (people <= 0 || !people) {
+    if (people <= 0 || !people || !Number.isInteger(people)) {
       setIsValidPeople(true);
     }
 
-    if (bill > 0 && people > 0) {
+    if (bill > 0 && people > 0 && Number.isInteger(people) && tip >= 0) {
       try {
         setIsDisabled(true);
         const res = await axios.get(
@@ -54,11 +60,13 @@ function CalResult() {
     setBill('');
     setTip('');
     setPeople('');
+    setInputTip('');
     setAmount(0);
     setTotal(0);
     setIsDisabled(true);
     setIsValidBill(false);
     setIsValidPeople(false);
+    setIsShowBtn(true);
   };
 
   const formatedNumber = (num) => {

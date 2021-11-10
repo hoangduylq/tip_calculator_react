@@ -246,6 +246,14 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.hide {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
 input,
 button {
   font-family: 'Space Mono', monospace;

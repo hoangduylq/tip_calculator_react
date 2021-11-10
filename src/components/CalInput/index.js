@@ -1,24 +1,44 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { GlobalState } from '../../GlobalState';
+import Dollar from '../Main/icon/icon-dollar.svg';
+import Person from '../Main/icon/icon-person.svg';
 
 const valueTipBtns = [5, 10, 15, 25, 50];
 
 function CalInput() {
   const state = useContext(GlobalState);
+
   const [bill, setBill] = state.bill;
   const [tip, setTip] = state.tip;
   const [people, setPeople] = state.people;
-  const inputEl = useRef(null);
+
+  const [inputTip, setInputTip] = state.inputTip;
+
   const [isValidBill, setIsValidBill] = state.isValidBill;
   const [isValidPeople, setIsValidPeople] = state.isValidPeople;
+  const [isShowBtn, setIsShowBtn] = state.isShowBtn;
 
   const handleBtnTip = (tip) => {
     setTip(parseFloat(tip));
   };
 
-  const handleCustomTipBtn = (e) => {
-    e.target.style.display = 'none';
-    inputEl.current.style.display = 'block';
+  const handleCustomTipBtn = () => {
+    setIsShowBtn(false);
+  };
+
+  const handleChangeInput = (e, selector, validSelector) => {
+    if (e.target.value.length > 9) {
+      e.target.value = e.target.value.slice(0, 9);
+    }
+    selector(parseFloat(e.target.value));
+    validSelector(false);
+  };
+
+  const handleChangeInputTip = (e) => {
+    if (e.target.value.length > 4) {
+      e.target.value = e.target.value.slice(0, 4);
+    }
+    setInputTip(parseFloat(e.target.value));
   };
 
   const handleOnBlurInputBill = () => {
@@ -27,26 +47,13 @@ function CalInput() {
     }
   };
 
-  const handleOnBlurInputPeople = () => {
-    if (people <= 0 || !people) {
-      setIsValidPeople(true);
-    }
+  const handleOnBlurInputTip = () => {
+    setTip(inputTip);
   };
 
-  const handleOnKeyDown = (e) => {
-    if (
-      !(
-        (e.keyCode > 95 && e.keyCode < 106) ||
-        (e.keyCode > 47 && e.keyCode < 58) ||
-        e.keyCode === 8 ||
-        e.keyCode === 37 ||
-        e.keyCode === 39 ||
-        e.keyCode === 46 ||
-        e.keyCode === 110 ||
-        e.keyCode === 190
-      )
-    ) {
-      return false;
+  const handleOnBlurInputPeople = () => {
+    if (people <= 0 || !people || !Number.isInteger(people)) {
+      setIsValidPeople(true);
     }
   };
 
@@ -55,10 +62,10 @@ function CalInput() {
       <div className={`calculator__input__bill ${isValidBill && 'invalid'}`}>
         <div>
           <label htmlFor='bill'>Bill</label>
-          <span className='invalid-noti'>Can't be zero</span>
+          <span className='invalid-noti'>Invalid value</span>
         </div>
         <div className='calculator__input__bill-wrap'>
-          <img src='./public/icons/icon-dollar.svg' alt='' />
+          <img src={Dollar} alt='' />
           <input
             type='number'
             id='bill'
@@ -67,11 +74,7 @@ function CalInput() {
             value={bill >= 0 ? bill : ''}
             name='bill'
             onBlur={handleOnBlurInputBill}
-            onKeyDown={(e) => handleOnKeyDown(e)}
-            onChange={(e) => {
-              setBill(parseFloat(e.target.value));
-              setIsValidBill(false);
-            }}
+            onChange={(e) => handleChangeInput(e, setBill, setIsValidBill)}
           />
         </div>
       </div>
@@ -89,20 +92,20 @@ function CalInput() {
             </button>
           ))}
           <button
-            className='button-tip'
+            className={'button-tip' + (isShowBtn ? ' show' : ' hide')}
             id='tip-custom'
             onClick={handleCustomTipBtn}>
             Custom
           </button>
           <input
-            ref={inputEl}
             type='number'
             id='tip-custom-input'
+            className={!isShowBtn ? 'show' : 'hide'}
             placeholder='0'
             autoComplete='off'
-            value={tip >= 0 ? tip : ''}
-            onKeyDown={(e) => handleOnKeyDown(e)}
-            onChange={(e) => setTip(parseFloat(e.target.value)) || tip}
+            value={inputTip >= 0 ? inputTip : ''}
+            onBlur={handleOnBlurInputTip}
+            onChange={(e) => handleChangeInputTip(e)}
           />
         </div>
       </div>
@@ -111,10 +114,10 @@ function CalInput() {
         className={`calculator__input__people ${isValidPeople && 'invalid'}`}>
         <div>
           <label htmlFor='people'>Number of People</label>
-          <span className='invalid-noti'>Can't be zero</span>
+          <span className='invalid-noti'>Invalid value</span>
         </div>
         <div className='calculator__input__people-wrap'>
-          <img src='./public/icons/icon-person.svg' alt='' />
+          <img src={Person} alt='' />
           <input
             type='number'
             id='people'
@@ -123,10 +126,7 @@ function CalInput() {
             name='people'
             value={people >= 0 ? people : ''}
             onBlur={handleOnBlurInputPeople}
-            onChange={(e) => {
-              setPeople(parseFloat(e.target.value));
-              setIsValidPeople(false);
-            }}
+            onChange={(e) => handleChangeInput(e, setPeople, setIsValidPeople)}
           />
         </div>
       </div>
