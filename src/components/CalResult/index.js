@@ -23,11 +23,12 @@ function CalResult() {
   const [, setIsShowBtn] = state.isShowBtn;
 
   useEffect(() => {
-    if (bill || tip || people || isNaN(bill) || isNaN(people) || isNaN(tip)) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
+    // if (bill || tip || people || isNaN(bill) || isNaN(people) || isNaN(tip)) {
+    //   setIsDisabled(false);
+    // } else {
+    //   setIsDisabled(true);
+    // }
+    setIsDisabled(!(bill || tip || people));
   }, [bill, tip, people]);
 
   const handleResultBtn = async () => {
