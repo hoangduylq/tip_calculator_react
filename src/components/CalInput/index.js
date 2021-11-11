@@ -31,7 +31,7 @@ function CalInput() {
       e.target.value = e.target.value.slice(0, 9);
     }
     e.target.value = e.target.value.replace(
-      /[a-zA-Z&/ \\#,+()$~%'":*?<>{}]/g,
+      /[a-zA-Z&/ \\#,+()$~%'`!@^_=":*?<>{}-]/g,
       ''
     );
     selector(e.target.value);
@@ -43,7 +43,7 @@ function CalInput() {
       e.target.value = e.target.value.slice(0, 4);
     }
     e.target.value = e.target.value.replace(
-      /[a-zA-Z&/ \\#,+()$~%'":*?<>{}]/g,
+      /[a-zA-Z&/ \\#,+()$~%'`!@^_=":*?<>{}-]/g,
       ''
     );
     setInputTip(e.target.value);
